@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#155c3e">
+
+<title>Equivalencias Alimentarias</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --g1:#0d3d2a;
+  --g2:#155c3e;
+  --g3:#27ae60;
+  --g4:#52c985;
+  --g5:#f0fdf6;
+  --ink:#0a1f14;
+  --muted:#6b9a7d;
+  --line:rgba(39,174,96,.15);
+  --white:#fff;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--g5);
+  color:var(--ink);
+}
+
+.header{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  padding:50px 20px 30px;
+  color:white;
+}
+
+.header h1{
+  font-family:'Syne',sans-serif;
+  font-size:32px;
+  line-height:1.1;
+  font-weight:800;
+}
+
+.header p{
+  margin-top:10px;
+  color:#b8f1d0;
+  font-size:14px;
+}
+
+.main{
+  max-width:520px;
+  margin:auto;
+  padding:18px;
+}
+
+.card{
+  background:white;
+  border-radius:22px;
+  padding:20px;
+  margin-bottom:14px;
+  border:1px solid var(--line);
+}
+
+.label{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.1em;
+  color:var(--g3);
+  margin-bottom:14px;
+}
+
+.field{
+  margin-bottom:14px;
+}
+
+.field:last-child{
+  margin-bottom:0;
+}
+
+.field label{
+  display:block;
+  margin-bottom:6px;
+  font-size:13px;
+  color:var(--muted);
+}
+
+input{
+  width:100%;
+  height:54px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#f8fffb;
+  padding:0 16px;
+  font-size:18px;
+  font-weight:700;
+  outline:none;
+}
+
+.food-btn{
+  width:100%;
+  height:56px;
+  border:none;
+  border-radius:14px;
+  background:#f8fffb;
+  border:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 16px;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.pills{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.pill{
+  height:48px;
+  border:none;
+  border-radius:12px;
+  background:#eefcf4;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.pill.active{
+  background:var(--g2);
+  color:white;
+}
+
+.result{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;
+  border-radius:24px;
+  padding:28px;
+}
+
+.result h2{
+  font-size:12px;
+  letter-spacing:.1em;
+  color:#a8edca;
+  margin-bottom:10px;
+}
+
+.big{
+  font-family:'Syne',sans-serif;
+  font-size:72px;
+  line-height:1;
+  font-weight:800;
+}
+
+.big span{
+  font-size:28px;
+  color:#a8edca;
+}
+
+.food{
+  margin-top:10px;
+  font-size:18px;
+}
+
+.hint{
+  margin-top:16px;
+  background:rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:12px;
+  color:#c9f5db;
+  font-size:13px;
+}
+
+.macros{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:16px;
+}
+
+.tile{
+  background:#f7fcf9;
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+}
+
+.tile b{
+  display:block;
+  font-size:18px;
+}
+
+.tile span{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.search{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  padding:16px;
+}
+
+.search.open{
+  display:block;
+}
+
+.search-box{
+  background:white;
+  border-radius:24px;
+  overflow:hidden;
+  height:80vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.search-head{
+  padding:16px;
+  border-bottom:1px solid var(--line);
+}
+
+.search-head input{
+  height:50px;
+}
+
+.search-list{
+  flex:1;
+  overflow:auto;
+}
+
+.search-item{
+  padding:14px 16px;
+  border-bottom:1px solid #f2f2f2;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+}
+
+.cat{
+  padding:14px 16px 6px;
+  font-size:11px;
+  font-weight:700;
+  color:var(--g3);
+}
+
+.cancel{
+  margin-top:10px;
+  height:54px;
+  border:none;
+  border-radius:14px;
+  background:white;
+  color:#d63031;
+  font-weight:700;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Equivalencias Alimentarias</h1>
+  <p>Calcula equivalencias exactas entre alimentos</p>
+</div>
+
+<div class="main">
+
+  <div class="card">
+
+    <div class="label">ALIMENTO ORIGINAL</div>
+
+    <div class="field">
+      <label>Selecciona alimento</label>
+
+      <button class="food-btn" onclick="openSearch('orig')">
+        <span id="origText">Selecciona...</span>
+        <span>›</span>
+      </button>
+    </div>
+
+    <div class="field">
+      <label>Gramos</label>
+      <input type="number" id="grams" value="100" oninput="calculate()">
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="label">IGUALAR</div>
+
+    <div class="pills">
+      <button class="pill active" data="k" onclick="setCrit(this)">🔥 Calorías</button>
+      <button class="pill" data="p" onclick="setCrit(this)">💪 Proteína</button>
+      <button class="pill" data="ch" onclick="setCrit(this)">🌾 Carbos</button>
+      <button class="pill" data="f" onclick="setCrit(this)">🥑 Grasas</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="label">SUSTITUTO</div>
+
+    <div class="field">
+      <label>Selecciona sustituto</label>
+
+      <button class="food-btn" onclick="openSearch('sub')">
+        <span id="subText">Selecciona...</span>
+        <span>›</span>
+      </button>
+    </div>
+
+  </div>
+
+  <div id="result">
+
+    <div class="card" style="text-align:center;">
+      Selecciona ambos alimentos
+    </div>
+
+  </div>
+
+</div>
+
+<div class="search" id="search">
+
+  <div class="search-box">
+
+    <div class="search-head">
+      <input type="text" id="searchInput" placeholder="Buscar..." oninput="renderSearch(this.value)">
+    </div>
+
+    <div class="search-list" id="searchList"></div>
+
+  </div>
+
+  <button class="cancel" onclick="closeSearch()">Cancelar</button>
+
+</div>
+
+<script>
+
+const DB = [
+
+{c:'Proteínas',n:'Pechuga de pollo',k:110,p:23,f:1.2,ch:0},
+{c:'Proteínas',n:'Pavo',k:107,p:24,f:1,ch:0},
+{c:'Proteínas',n:'Salmón',k:208,p:20,f:13,ch:0},
+{c:'Proteínas',n:'Atún',k:116,p:26,f:1,ch:0},
+
+{c:'Carbohidratos',n:'Arroz blanco',k:360,p:7,f:0.6,ch:79},
+{c:'Carbohidratos',n:'Pasta',k:353,p:12,f:1.5,ch:72},
+{c:'Carbohidratos',n:'Patata',k:77,p:2,f:0.1,ch:17},
+{c:'Carbohidratos',n:'Avena',k:389,p:17,f:7,ch:66},
+
+{c:'Frutas',n:'Plátano',k:89,p:1.1,f:0.3,ch:23},
+{c:'Frutas',n:'Piña',k:50,p:0.5,f:0.1,ch:12},
+{c:'Frutas',n:'Arándanos',k:57,p:0.7,f:0.3,ch:14},
+
+{c:'Grasas',n:'Aguacate',k:160,p:2,f:15,ch:9},
+{c:'Grasas',n:'Aceite de oliva',k:900,p:0,f:100,ch:0}
+
+];
+
+let orig = null;
+let sub = null;
+let crit = 'k';
+let target = null;
+
+function food(n){
+  return DB.find(x=>x.n===n);
+}
+
+function round(n,d=1){
+  return Math.round(n*Math.pow(10,d))/Math.pow(10,d);
+}
+
+function setCrit(el){
+
+  document.querySelectorAll('.pill').forEach(p=>{
+    p.classList.remove('active');
+  });
+
+  el.classList.add('active');
+
+  crit = el.getAttribute('data');
+
+  calculate();
+}
+
+function openSearch(t){
+
+  target = t;
+
+  document.getElementById('search').classList.add('open');
+
+  renderSearch('');
+}
+
+function closeSearch(){
+
+  document.getElementById('search').classList.remove('open');
+}
+
+function renderSearch(q){
+
+  q = q.toLowerCase();
+
+  let html = '';
+
+  let last = '';
+
+  DB.filter(x=>x.n.toLowerCase().includes(q))
+  .forEach(item=>{
+
+    if(item.c !== last){
+
+      last = item.c;
+
+      html += `<div class="cat">${item.c}</div>`;
+    }
+
+    html += `
+      <div class="search-item" onclick="selectFood('${item.n}')">
+        <span>${item.n}</span>
+        <span>${item.k} kcal</span>
+      </div>
+    `;
+  });
+
+  document.getElementById('searchList').innerHTML = html;
+}
+
+function selectFood(name){
+
+  if(target === 'orig'){
+
+    orig = name;
+
+    document.getElementById('origText').textContent = name;
+  }
+
+  if(target === 'sub'){
+
+    sub = name;
+
+    document.getElementById('subText').textContent = name;
+  }
+
+  closeSearch();
+
+  calculate();
+}
+
+function calculate(){
+
+  if(!orig || !sub) return;
+
+  const grams = parseFloat(document.getElementById('grams').value) || 100;
+
+  const o = food(orig);
+  const s = food(sub);
+
+  const value = o[crit] * grams / 100;
+
+  const subGrams = value / s[crit] * 100;
+
+  const kcal = s.k * subGrams / 100;
+  const prot = s.p * subGrams / 100;
+  const carbs = s.ch * subGrams / 100;
+  const fat = s.f * subGrams / 100;
+
+  document.getElementById('result').innerHTML = `
+
+    <div class="result">
+
+      <h2>EQUIVALENCIA</h2>
+
+      <div class="big">
+        ${round(subGrams,0)}<span>g</span>
+      </div>
+
+      <div class="food">
+        de <b>${sub}</b>
+      </div>
+
+      <div class="hint">
+        Equivalen a ${grams}g de ${orig}
+      </div>
+
+    </div>
+
+    <div class="card">
+
+      <div class="label">MACROS</div>
+
+      <div class="macros">
+
+        <div class="tile">
+          <b>${round(kcal,0)}</b>
+          <span>Kcal</span>
+        </div>
+
+        <div class="tile">
+          <b>${round(prot,1)}</b>
+          <span>Prot.</span>
+        </div>
+
+        <div class="tile">
+          <b>${round(carbs,1)}</b>
+          <span>Carbs</span>
+        </div>
+
+        <div class="tile">
+          <b>${round(fat,1)}</b>
+          <span>Grasas</span>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+renderSearch('');
+
+</script>
+
+</body>
+</html>
